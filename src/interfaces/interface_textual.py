@@ -44,12 +44,12 @@ def loop_opções_execução():
             imprimir_objetos(cabeçalho_empreiteiro,get_empreiteiros().values())
             imprimir_objetos(cabeçalho_equipamento,get_equipamentos().values())
             imprimir_objetos(cabeçalho_obra, get_obras().values())
-            imprimir_objetos(cabeçalho_obra_equipamentos, get_equipamentos().values())
+            imprimir_obra_equipamentos(cabeçalho_obra_equipamentos)
             imprimir_objetos(cabeçalho_contrato, get_contratos())
 def imprimir_obra_equipamentos(cabeçalho_obra_equipamentos):
     print(cabeçalho_obra_equipamentos)
     for índice, obra in enumerate(get_obras().values()):
-        imprimir_objetos(índice=índice, objeto_str=str(obra))
+        imprimir_objeto(índice=índice, objeto_str=str(obra))
         imprimir_objetos_internos(obra.equipamentos.values())
 
 def loop_leitura_empreiteiros():
@@ -185,12 +185,11 @@ def selecionar_contrato():
     prefixo_nome_empreiteiro = ler_prefixo_nome_empreiteiro(filtro=True)
     if prefixo_nome_empreiteiro is not None: filtros += '- prefixo do nome empreiteiro: ' + str(prefixo_nome_empreiteiro)
     método_de_execução_obra = ler_obra_execução('metodo de execução obra ', filtro=True)
-    if método_de_execução_obra: filtros += ' - Horizontal'
-    elif método_de_execução_obra == False: filtros += '- Vertical'
-    peso_máximo_equipamento = ler_str('peso do equipamento ', filtro=True)
+    if método_de_execução_obra is not None: filtros += ' - ' + método_de_execução_obra
+    peso_máximo_equipamento = ler_int_positivo('peso do equipamento ', filtro=True)
     if  peso_máximo_equipamento is not None: filtros += ('- peso máximo dos equipamentos: ' + str(peso_máximo_equipamento))
     capacidade_mínima_betoneira = ler_int_positivo('capacidade da betoneira ', filtro=True)
-    if capacidade_mínima_betoneira is not None: filtros += '- capacidade da betoneira: ' + str(capacidade_mínima_betoneira)
+    if capacidade_mínima_betoneira is not None: filtros += ' - capacidade mínima da betoneira: ' + str(capacidade_mínima_betoneira)
     perfuração_furadeira = ler_perfuração_furadeira('perfuração da furadeira ', filtro=True)
     if perfuração_furadeira is not None: filtros += '\n- perfuração da furadeira ' + str(perfuração_furadeira)
     contratos_selecionados = filtrar_contrato(data_mínima_contrato, prefixo_nome_empreiteiro, método_de_execução_obra, peso_máximo_equipamento, capacidade_mínima_betoneira, perfuração_furadeira)
